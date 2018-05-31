@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TestScript : MonoBehaviour {
+	public Text text;
     private AudioSource source;
     int sample = 1024;
-    float Loudness = 0;
     //get data from microphone into audioclip
     float maxLoud(AudioClip clip)
     {
@@ -16,15 +17,13 @@ public class TestScript : MonoBehaviour {
             return 0;
         clip.GetData(soundData, micPosition);
         // peak on the last X amount samples
+		float result=0;
         for (int i = 0; i < sample; i++)
         {
-            float peak = soundData[i] * soundData[i];
-            if (Loudness < peak)
-            {
-                Loudness = peak;
-            }
+            result += soundData[i] * soundData[i];
         }
-        return Loudness;
+		text.text=result.ToString();
+        return result;
     }
     void Start()
     {
@@ -39,6 +38,6 @@ public class TestScript : MonoBehaviour {
     }
     // Update is called once per frame
     void Update () {
-       	// maxLoud(source.clip);
+       	maxLoud(source.clip);
     }
 }
